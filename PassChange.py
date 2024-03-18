@@ -64,7 +64,8 @@ class PasswordChange:
         return 'done'
 
     def save_pass(self, identifier, password, window):
-        self.cur.execute("UPDATE users SET password=? WHERE identifier=?", (identifier, password))
+        self.cur.execute("UPDATE users SET password=? WHERE identifier=?", (password, identifier))
+        self.conn.commit()
         messagebox.showinfo(message='Успешно сохранено')
         window.destroy()
         return 'done'

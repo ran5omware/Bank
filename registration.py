@@ -1,12 +1,17 @@
 import tkinter as tk
 from tkinter import messagebox
+from MainWindow import Window
 from OpenAccount import Database
 
 
 class Registration:
 
-    def __init__(self, window):
-        self.window = window
+    def __init__(self):
+        self.window = tk.Tk()
+
+        self.window.resizable(width=False, height=False)
+        self.window.title('Регистрация')
+        self.window.geometry('400x350')
 
         self.EnName = tk.Label(self.window, text='Введите ФИО')
         self.EnName.place(x=150, y=25)
@@ -31,6 +36,8 @@ class Registration:
         conf = tk.Button(self.window, text='Сохранить', command=self.add_text, width=20, height=1)
         conf.place(x=130, y=285)
 
+        self.window.mainloop()
+
     def add_text(self):
         name = self.EnterName.get()
         identifier = self.EnterId.get()
@@ -44,3 +51,4 @@ class Registration:
             if result == 'done':
                 messagebox.showinfo("Popup", "Регистрация прошла успешно")
                 self.window.destroy()
+                Window()

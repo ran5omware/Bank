@@ -12,11 +12,13 @@ class Database:
         self.cur.execute("""CREATE TABLE IF NOT EXISTS users (
                         name TEXT,
                         identifier TEXT,
+                        bankNumber TEXT,
                         phoneNumber TEXT,
                         password TEXT,
                         cardNumber TEXT
                     )""")
         self.cur.execute("""CREATE TABLE IF NOT EXISTS accounts (
+                        bankNumber TEXT,
                         cardNumber TEXT,
                         demand_balance INTEGER,
                         fixed_balance INTEGER,
@@ -36,11 +38,17 @@ class Database:
             while cardNumber in numbers:
                 cardNumber = ' '.join([str(randint(1000, 9999)) for _ in range(4)])
 
+            bankNumber = ''.join([str(randint(100, 999)) for _ in range(3)])
+            while bankNumber in numbers:
+                bankNumber = ''.join([str(randint(100, 999)) for _ in range(3)])
+
             cur.execute(
-                "INSERT INTO users (name, identifier, phoneNumber, password, cardNumber) VALUES (?, ?, ?, ?, ?)",
-                (name, identifier, phoneNumber, password, cardNumber))
-            cur.execute("INSERT INTO accounts (cardNumber, demand_balance, fixed_balance, freeze) VALUES (?, ?, ?, ?)",
-                        (cardNumber, 0, 0, "Разблокирована"))
+                "INSERT INTO users (name, identifier, bankNumber, phoneNumber, password, cardNumber) "
+                "VALUES (?, ?, ?, ?, ?, ?)",
+                (name, identifier, bankNumber, phoneNumber, password, cardNumber))
+            cur.execute("INSERT INTO accounts (bankNumber, cardNumber, demand_balance, fixed_balance, freeze) "
+                        "VALUES (?, ?, ?, ?, ?)",
+                        (bankNumber, cardNumber, 0, 0, "Разблокирована"))
             conn.commit()
             return 'done'
         except sqlite3.Error as e:

@@ -1,4 +1,4 @@
-import MainWindow
+import Enter
 
 if __name__ == '__main__':
-    MainWindow.Window()
+    Enter.Enter()
