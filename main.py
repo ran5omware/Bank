@@ -1,5 +1,4 @@
-import registration
-
+import MainWindow
 
 if __name__ == '__main__':
-    registration.Registration()
+    MainWindow.Window()

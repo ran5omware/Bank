@@ -42,7 +42,7 @@ class Database:
             cur.execute("INSERT INTO accounts (cardNumber, demand_balance, fixed_balance, freeze) VALUES (?, ?, ?, ?)",
                         (cardNumber, 0, 0, "Разблокирована"))
             conn.commit()
-            return "Готово"
+            return 'done'
         except sqlite3.Error as e:
-            print("Ошибка при записи в базу данных:", e)
-            return "Ошибка"
+            print('Ошибка при записи в базу данных:', e)
+            return 'Ошибка'
