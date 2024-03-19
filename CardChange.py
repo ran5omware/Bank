@@ -1,6 +1,6 @@
 import sqlite3
 import tkinter as tk
-from Block import Block
+from Lock import Lock
 from random import randint
 from tkinter import messagebox
 from OpenAccount import Database
@@ -34,36 +34,44 @@ class CardChange:
     def change(self):
         identifier = self.EnterId.get()
         password = self.EnterPass.get()
-        self.cur.execute("SELECT identifier, password FROM users WHERE identifier=?", (identifier,))
-        result = self.cur.fetchone()
-        if self.count == 3:
-            self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (identifier,))
-            bankNumber = self.cur.fetchone()[0]
-            Block.block(bankNumber)
-        if result is None:
-            self.window.withdraw()
-            messagebox.showinfo('Ошибка',
-                                'Ошибка, пользователь с таким набором параметров не найден, попробуйте еще раз\n'
-                                f'Осталось {3 - self.count} попыток')
-            self.count += 1
-            self.window.deiconify()
-        elif result[1] != password:
-            self.window.withdraw()
-            messagebox.showinfo('Ошибка',
-                                'Ошибка, пользователь с таким набором параметров не найден, попробуйте еще раз'
-                                f'Осталось {3 - self.count} попыток')
-            self.count += 1
-            self.window.deiconify()
+        self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (identifier,))
+        bankNumber = self.cur.fetchone()[0]
+        self.cur.execute("SELECT freeze FROM accounts WHERE bankNumber=?", (bankNumber,))
+        if self.cur.fetchone()[0] == 'Заблокирована':
+            messagebox.showinfo('Ошибка', 'Ваша карта заблокирована, вы не можете ее поменять, пока не разблокируете')
+            self.window.destroy()
         else:
-            self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (identifier,))
-            bankNumber = self.cur.fetchone()[0]
-            self.cur.execute("SELECT cardNumber FROM users")
-            numbers = self.cur.fetchall()
-            cardNumber = ' '.join([str(randint(1000, 9999)) for _ in range(4)])
-            while cardNumber in numbers:
+            self.cur.execute("SELECT identifier, password FROM users WHERE identifier=?", (identifier,))
+            result = self.cur.fetchone()
+            if self.count == 3:
+                self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (identifier,))
+                bankNumber = self.cur.fetchone()[0]
+                l = Lock()
+                l.lock(bankNumber)
+            if result is None:
+                self.window.withdraw()
+                messagebox.showinfo('Ошибка',
+                                    'Ошибка, пользователь с таким набором параметров не найден, попробуйте еще раз\n'
+                                    f'Осталось {3 - self.count} попыток')
+                self.count += 1
+                self.window.deiconify()
+            elif result[1] != password:
+                self.window.withdraw()
+                messagebox.showinfo('Ошибка',
+                                    'Ошибка, пользователь с таким набором параметров не найден, попробуйте еще раз'
+                                    f'Осталось {3 - self.count} попыток')
+                self.count += 1
+                self.window.deiconify()
+            else:
+                self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (identifier,))
+                bankNumber = self.cur.fetchone()[0]
+                self.cur.execute("SELECT cardNumber FROM users")
+                numbers = self.cur.fetchall()
                 cardNumber = ' '.join([str(randint(1000, 9999)) for _ in range(4)])
-            self.save_card(bankNumber, cardNumber, self.window)
-        return 'done'
+                while cardNumber in numbers:
+                    cardNumber = ' '.join([str(randint(1000, 9999)) for _ in range(4)])
+                self.save_card(bankNumber, cardNumber, self.window)
+            return 'done'
 
     def save_card(self, bankNumber, cardNumber, window):
         try:

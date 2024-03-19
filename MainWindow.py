@@ -1,10 +1,13 @@
 import tkinter as tk
 from PassChange import PasswordChange
 from CardChange import CardChange
+from Lock import Lock
+from Unlock import Unlock
+from OpenAccount import Database
 
 
 class Window:
-    def __init__(self):
+    def __init__(self, current_user):
         self.success = None
         self.window = tk.Tk()
 
@@ -12,6 +15,11 @@ class Window:
         self.window.title('Банк')
         self.window.geometry('720x620')
         self.window["bg"] = 'black'
+
+        self.user = current_user
+        db = Database()
+        self.cur = db.cur
+        self.conn = db.conn
 
         self.text = tk.Label(self.window, text='Главная', font=('Arial Bold', 15), fg='lime', bg='black')
         self.text.place(x=305, y=25)
@@ -31,11 +39,11 @@ class Window:
         self.password = tk.Button(self.window, text='Сменить пароль', command=self.change_password, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.password.place(x=265, y=335)
 
-        self.block = tk.Button(self.window, text='Блокировка', command=self.block, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
-        self.block.place(x=265, y=385)
+        self.lock = tk.Button(self.window, text='Блокировка', command=self.block, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
+        self.lock.place(x=265, y=385)
 
-        self.unblock = tk.Button(self.window, text='Разблокировка', font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
-        self.unblock.place(x=265, y=435)
+        self.unlock = tk.Button(self.window, text='Разблокировка', command=self.unblock, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
+        self.unlock.place(x=265, y=435)
 
         self.card = tk.Button(self.window, text='Заменить карту', command=self.change_card_number, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.card.place(x=265, y=485)
@@ -56,7 +64,7 @@ class Window:
 
     def change_card_number(self):
         cardNumberChangeWindow = tk.Toplevel(self.window)
-        cardNumberChangeWindow.title('Смена пароля')
+        cardNumberChangeWindow.title('Замена карты')
         cardNumberChangeWindow.geometry('400x300')
         cardNumberChangeWindow.resizable(width=False, height=False)
 
@@ -64,4 +72,15 @@ class Window:
         cardNumberChangeWindow.mainloop()
 
     def block(self):
-        pass
+        self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (self.user,))
+        l = Lock()
+        l.lock(self.cur.fetchone()[0])
+
+    def unblock(self):
+        unlockWindow = tk.Toplevel(self.window)
+        unlockWindow.title('Разблокировка аккаунта')
+        unlockWindow.geometry('400x300')
+        unlockWindow.resizable(width=False, height=False)
+
+        Unlock(unlockWindow)
+        unlockWindow.mainloop()

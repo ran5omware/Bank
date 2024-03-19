@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from MainWindow import Window
-from Block import Block
+from Lock import Lock
 from OpenAccount import Database
 from registration import Registration
 
@@ -46,12 +46,14 @@ class Enter:
                 bankNumber = result[0]
                 self.count += 1
                 if self.count == 3:
-                    b = Block()
-                    b.block(bankNumber)
+                    b = Lock()
+                    b.lock(bankNumber)
                 elif result[1] == identifier and result[2] == password:
                     messagebox.showinfo("Popup", "Вы успешно вошли")
                     self.window.destroy()
-                    Window()
+                    Window(identifier)
+                else:
+                    messagebox.showinfo("Ошибка", "Вы ввели неверные данные, возможно вы не зарегистрированы")
             else:
                 messagebox.showinfo("Ошибка", "Вы ввели неверные данные, возможно вы не зарегистрированы")
 
