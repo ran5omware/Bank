@@ -4,6 +4,7 @@ from CardChange import CardChange
 from Lock import Lock
 from Unlock import Unlock
 from OpenAccount import Database
+from Request import Balance
 
 
 class Window:
@@ -24,7 +25,7 @@ class Window:
         self.text = tk.Label(self.window, text='Главная', font=('Arial Bold', 15), fg='lime', bg='black')
         self.text.place(x=305, y=25)
 
-        self.request = tk.Button(self.window, text='Запрос', font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
+        self.request = tk.Button(self.window, text='Запрос', command=self.request, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.request.place(x=265, y=135)
 
         self.deposit = tk.Button(self.window, text='Депозит', font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
@@ -84,3 +85,14 @@ class Window:
 
         Unlock(unlockWindow)
         unlockWindow.mainloop()
+
+    def request(self):
+        requestWindow = tk.Toplevel(self.window)
+        requestWindow.title('Выписка баланса')
+        requestWindow.geometry('400x300')
+        requestWindow.resizable(width=False, height=False)
+
+        self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (self.user,))
+        bankNumber = self.cur.fetchone()[0]
+        Balance(requestWindow, bankNumber)
+        requestWindow.mainloop()
