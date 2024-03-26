@@ -51,4 +51,4 @@ class Registration:
             if result == 'done':
                 messagebox.showinfo("Popup", "Регистрация прошла успешно")
                 self.window.destroy()
-                Window()
+                Window(identifier)
