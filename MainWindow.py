@@ -5,6 +5,7 @@ from Lock import Lock
 from Unlock import Unlock
 from OpenAccount import Database
 from Deposit import Deposit
+from Transfer import Transfer
 from Request import Balance
 
 
@@ -35,7 +36,7 @@ class Window:
         self.withdrawal = tk.Button(self.window, text='Снятие', font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.withdrawal.place(x=265, y=235)
 
-        self.transfer = tk.Button(self.window, text='Перевод', font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
+        self.transfer = tk.Button(self.window, text='Перевод', command=self.transfer, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.transfer.place(x=265, y=285)
 
         self.password = tk.Button(self.window, text='Сменить пароль', command=self.change_password, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
@@ -109,6 +110,17 @@ class Window:
         Deposit(depositWindow, bankNumber)
         depositWindow.mainloop()
 
+    def transfer(self):
+        tranferWindow = tk.Toplevel(self.window)
+        tranferWindow.title('Депозит средств')
+        tranferWindow.geometry('400x300')
+        tranferWindow.resizable(width=False, height=False)
+
+        self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (self.user,))
+        bankNumber = self.cur.fetchone()[0]
+        Transfer(tranferWindow, bankNumber)
+        tranferWindow.mainloop()
+
 
 if __name__ == '__main__':
-    Window('lol')
+    Window('2')
