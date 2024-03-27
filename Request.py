@@ -7,7 +7,6 @@ class Balance:
     def __init__(self, window, bankNumber):
         db = Database()
         self.cur = db.cur
-        self.conn = db.conn
 
         self.window = window
 
@@ -35,18 +34,18 @@ class Balance:
             self.text = tk.Label(self.window, text='Дебетовый баланс:',
                                  font=('Ariel bold', 12))
             self.text.place(x=25, y=75)
-            self.cur.execute("SELECT fixed_balance FROM accounts WHERE bankNumber=?", (bankNumber,))
-            fixed_balance = str(self.cur.fetchone()[0]) + " руб."
-            self.text = tk.Label(self.window, text=fixed_balance,
+            self.cur.execute("SELECT demand_balance FROM accounts WHERE bankNumber=?", (bankNumber,))
+            self.demand_balance = str(self.cur.fetchone()[0]) + " руб."
+            self.text = tk.Label(self.window, text=self.demand_balance,
                                  font=('Ariel bold', 12))
             self.text.place(x=185, y=75)
 
             self.text = tk.Label(self.window, text='Баланс вложений:',
                                  font=('Ariel bold', 12))
             self.text.place(x=25, y=125)
-            self.cur.execute("SELECT demand_balance FROM accounts WHERE bankNumber=?", (bankNumber,))
-            demand_balance = str(self.cur.fetchone()[0]) + " руб."
-            self.text = tk.Label(self.window, text=demand_balance,
+            self.cur.execute("SELECT fixed_balance FROM accounts WHERE bankNumber=?", (bankNumber,))
+            self.fixed_balance = str(self.cur.fetchone()[0]) + " руб."
+            self.text = tk.Label(self.window, text=self.fixed_balance,
                                  font=('Ariel bold', 12))
             self.text.place(x=185, y=125)
 
@@ -54,6 +53,10 @@ class Balance:
             conf.place(x=130, y=255)
 
     def print(self):
-        messagebox.showinfo('Распечатывание',
-                            'Ваучер успешно распечатан')
+        details = f"Информация по аккаунту\n" \
+                  f"Баланс фиксированного депозита: {self.fixed_balance}\n" \
+                  f"Процентная ставка: 15%\n" \
+                  f"Баланс депозита до востребования: {self.demand_balance}\n" \
+                  f"Процентная ставка: 3%\n"
+        tk.messagebox.showinfo("Баланс", details)
         self.window.destroy()

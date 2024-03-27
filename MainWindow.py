@@ -4,6 +4,7 @@ from CardChange import CardChange
 from Lock import Lock
 from Unlock import Unlock
 from OpenAccount import Database
+from Deposit import Deposit
 from Request import Balance
 
 
@@ -28,7 +29,7 @@ class Window:
         self.request = tk.Button(self.window, text='Запрос', command=self.request, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.request.place(x=265, y=135)
 
-        self.deposit = tk.Button(self.window, text='Депозит', font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
+        self.deposit = tk.Button(self.window, text='Депозит', command=self.deposit, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.deposit.place(x=265, y=185)
 
         self.withdrawal = tk.Button(self.window, text='Снятие', font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
@@ -96,3 +97,18 @@ class Window:
         bankNumber = self.cur.fetchone()[0]
         Balance(requestWindow, bankNumber)
         requestWindow.mainloop()
+
+    def deposit(self):
+        depositWindow = tk.Toplevel(self.window)
+        depositWindow.title('Депозит средств')
+        depositWindow.geometry('400x300')
+        depositWindow.resizable(width=False, height=False)
+
+        self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (self.user,))
+        bankNumber = self.cur.fetchone()[0]
+        Deposit(depositWindow, bankNumber)
+        depositWindow.mainloop()
+
+
+if __name__ == '__main__':
+    Window('lol')
