@@ -8,10 +8,23 @@ from Deposit import Deposit
 from Transfer import Transfer
 from Request import Balance
 from Withdrawal import Withdrawal
+from Cancel import Cancel
+from datetime import datetime
+
+
+def check(bankNumber):
+    db = Database()
+    db.cur.execute("SELECT createDate FROM accounts WHERE bankNumber=?", (bankNumber,))
+    if datetime.today().strftime("%M %Y")[-1] == db.cur.execute()[0][-1] - 1:
+        db.cur.execute("SELECT fixed_balance FROM accounts WHERE bankNumber=?", (bankNumber,))
+        balance = db.cur.fetchone()[0] * 1.15
+        db.cur.execute("UPDATE account SET fixed_balance=? WHERE bankNumber=?", (balance, bankNumber))
+        db.conn.commit()
 
 
 class Window:
     def __init__(self, current_user):
+
         self.success = None
         self.window = tk.Tk()
 
@@ -24,6 +37,9 @@ class Window:
         db = Database()
         self.cur = db.cur
         self.conn = db.conn
+
+        self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (self.user,))
+        check(self.cur.fetchone()[0])
 
         self.text = tk.Label(self.window, text='Главная', font=('Arial Bold', 15), fg='lime', bg='black')
         self.text.place(x=305, y=25)
@@ -52,7 +68,7 @@ class Window:
         self.card = tk.Button(self.window, text='Заменить карту', command=self.change_card_number, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.card.place(x=265, y=485)
 
-        self.cancel = tk.Button(self.window, text='Удалить аккаунт', font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
+        self.cancel = tk.Button(self.window, text='Удалить аккаунт', command=self.cancel, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.cancel.place(x=265, y=535)
 
         self.window.mainloop()
@@ -133,6 +149,17 @@ class Window:
         Withdrawal(withdrawalWindow, bankNumber)
         withdrawalWindow.mainloop()
 
+    def cancel(self):
+        cancelWindow = tk.Toplevel(self.window)
+        cancelWindow.title('Перевод')
+        cancelWindow.geometry('400x300')
+        cancelWindow.resizable(width=False, height=False)
+
+        self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (self.user,))
+        bankNumber = self.cur.fetchone()[0]
+        Cancel(cancelWindow, bankNumber)
+        cancelWindow.mainloop()
+
 
 if __name__ == '__main__':
-    Window('2')
+    Window('1')

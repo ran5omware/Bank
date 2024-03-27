@@ -53,6 +53,9 @@ class Withdrawal:
                           f"Чек номер {randint(1_000_000, 9_999_999)}\n" \
                           f"Ваш текущий баланс: {self.curBal}"
                 tk.messagebox.showinfo("Ваучер снятия", details)
+                self.cur.execute("UPDATE accounts SET demand_balance=? WHERE bankNumber=?",
+                                (self.curBal, self.bankNumber))
+                self.conn.commit()
                 self.window.destroy()
 
             else:
@@ -68,7 +71,7 @@ class Withdrawal:
             self.window.destroy()
         self.cur.execute("SELECT fixed_balance FROM accounts WHERE bankNumber=?", (self.bankNumber,))
         if self.cur.fetchone()[0] >= int(self.EnterCash.get()):
-            self.cur.execute("SELECT demand_balance FROM accounts WHERE bankNumber=?", (self.bankNumber,))
+            self.cur.execute("SELECT fixed_balance FROM accounts WHERE bankNumber=?", (self.bankNumber,))
             self.curBal = self.cur.fetchone()[0] - self.EnterCash.get()
             self.cur.execute("SELECT password FROM users WHERE bankNumber=?", (self.bankNumber,))
             if self.cur.fetchone()[0] == self.EnterPass.get():
@@ -81,6 +84,8 @@ class Withdrawal:
                               f"Чек номер {randint(1_000_000, 9_999_999)}\n" \
                               f"Ваш текущий баланс: {self.curBal}"
                     tk.messagebox.showinfo("Ваучер снятия", details)
+                    self.cur.execute("UPDATE accounts SET fixed_balance=? WHERE bankNumber=?", (self.curBal, self.bankNumber))
+                    self.conn.commit()
                     self.window.destroy()
                 else:
                     tk.messagebox.showinfo("Ошибка", 'Вывод еще не доступен')
