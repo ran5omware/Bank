@@ -15,7 +15,7 @@ from datetime import datetime
 def check(bankNumber):
     db = Database()
     db.cur.execute("SELECT createDate FROM accounts WHERE bankNumber=?", (bankNumber,))
-    if datetime.today().strftime("%M %Y")[-1] == db.cur.execute()[0][-1] - 1:
+    if int(datetime.today().strftime("%M %Y")[-1]) == int(db.cur.fetchone()[0][-1]) - 1:
         db.cur.execute("SELECT fixed_balance FROM accounts WHERE bankNumber=?", (bankNumber,))
         balance = db.cur.fetchone()[0] * 1.15
         db.cur.execute("UPDATE account SET fixed_balance=? WHERE bankNumber=?", (balance, bankNumber))
