@@ -1,4 +1,5 @@
 from random import randint
+from datetime import datetime
 import sqlite3
 
 
@@ -22,6 +23,7 @@ class Database:
                         cardNumber TEXT,
                         demand_balance INTEGER,
                         fixed_balance INTEGER,
+                        createDate TEXT,
                         freeze TEXT
                     )""")
         self.conn.commit()
@@ -42,13 +44,15 @@ class Database:
             while bankNumber in numbers:
                 bankNumber = ''.join([str(randint(100, 999)) for _ in range(3)])
 
+            curDate = datetime.today().strftime("%M %Y")
+
             cur.execute(
                 "INSERT INTO users (name, identifier, bankNumber, phoneNumber, password, cardNumber) "
                 "VALUES (?, ?, ?, ?, ?, ?)",
                 (name, identifier, bankNumber, phoneNumber, password, cardNumber))
-            cur.execute("INSERT INTO accounts (bankNumber, cardNumber, demand_balance, fixed_balance, freeze) "
-                        "VALUES (?, ?, ?, ?, ?)",
-                        (bankNumber, cardNumber, 0, 0, "Разблокирована"))
+            cur.execute("INSERT INTO accounts (bankNumber, cardNumber, demand_balance, fixed_balance, createDate, freeze) "
+                        "VALUES (?, ?, ?, ?, ?, ?)",
+                        (bankNumber, cardNumber, 0, 0, curDate, "Разблокирована"))
             conn.commit()
             return 'done'
         except sqlite3.Error as e:

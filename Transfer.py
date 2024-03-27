@@ -63,7 +63,7 @@ class Transfer:
                 else:
                     tk.messagebox.showinfo('Ошибка', 'Указанная карта не найдена')
             else:
-                tk.messagebox.showinfo('Ошибка', 'Вы ввели неверный пароль')
                 self.passCount += 1
+                tk.messagebox.showinfo('Ошибка', f'Вы ввели неверный пароль, осталось попыток: {3 - self.passCount}')
         else:
             tk.messagebox.showinfo('Ошибка', 'У вас нет столько средств')

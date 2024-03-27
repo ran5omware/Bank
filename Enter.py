@@ -17,19 +17,19 @@ class Enter:
         self.count = 0
 
         self.iden = tk.Label(self.window, text='Введите идентификатор')
-        self.iden.place(x=150, y=25)
-        self.EnterId = tk.Entry(self.window, width=40)
+        self.iden.place(x=120, y=25)
+        self.EnterId = tk.Entry(self.window, width=30)
         self.EnterId.place(x=85, y=55)
 
         self.password = tk.Label(self.window, text='Введите пароль')
         self.password.place(x=140, y=85)
-        self.EnterPass = tk.Entry(self.window, width=40)
+        self.EnterPass = tk.Entry(self.window, width=30)
         self.EnterPass.place(x=85, y=115)
 
         conf = tk.Button(self.window, text='Войти', command=self.log, width=20, height=1)
-        conf.place(x=130, y=245)
+        conf.place(x=120, y=245)
         reg = tk.Button(self.window, text='Зарегистрироваться', command=self.registration, width=20, height=1)
-        reg.place(x=130, y=285)
+        reg.place(x=120, y=285)
 
         self.window.mainloop()
 

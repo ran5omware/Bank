@@ -7,6 +7,7 @@ from OpenAccount import Database
 from Deposit import Deposit
 from Transfer import Transfer
 from Request import Balance
+from Withdrawal import Withdrawal
 
 
 class Window:
@@ -33,7 +34,7 @@ class Window:
         self.deposit = tk.Button(self.window, text='Депозит', command=self.deposit, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.deposit.place(x=265, y=185)
 
-        self.withdrawal = tk.Button(self.window, text='Снятие', font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
+        self.withdrawal = tk.Button(self.window, text='Снятие', command=self.withdrawal, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
         self.withdrawal.place(x=265, y=235)
 
         self.transfer = tk.Button(self.window, text='Перевод', command=self.transfer, font=('Georgia', 10), fg='white', bg='gray', width=20, height=1)
@@ -112,7 +113,7 @@ class Window:
 
     def transfer(self):
         tranferWindow = tk.Toplevel(self.window)
-        tranferWindow.title('Депозит средств')
+        tranferWindow.title('Перевод')
         tranferWindow.geometry('400x300')
         tranferWindow.resizable(width=False, height=False)
 
@@ -120,6 +121,17 @@ class Window:
         bankNumber = self.cur.fetchone()[0]
         Transfer(tranferWindow, bankNumber)
         tranferWindow.mainloop()
+
+    def withdrawal(self):
+        withdrawalWindow = tk.Toplevel(self.window)
+        withdrawalWindow.title('Перевод')
+        withdrawalWindow.geometry('400x300')
+        withdrawalWindow.resizable(width=False, height=False)
+
+        self.cur.execute("SELECT bankNumber FROM users WHERE identifier=?", (self.user,))
+        bankNumber = self.cur.fetchone()[0]
+        Withdrawal(withdrawalWindow, bankNumber)
+        withdrawalWindow.mainloop()
 
 
 if __name__ == '__main__':

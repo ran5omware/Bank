@@ -15,22 +15,22 @@ class Registration:
 
         self.EnName = tk.Label(self.window, text='Введите ФИО')
         self.EnName.place(x=150, y=25)
-        self.EnterName = tk.Entry(self.window, width=40)
+        self.EnterName = tk.Entry(self.window, width=30)
         self.EnterName.place(x=85, y=55)
 
         self.iden = tk.Label(self.window, text='Введите идентификатор')
-        self.iden.place(x=140, y=85)
-        self.EnterId = tk.Entry(self.window, width=40)
+        self.iden.place(x=120, y=85)
+        self.EnterId = tk.Entry(self.window, width=30)
         self.EnterId.place(x=85, y=115)
 
         self.pn = tk.Label(self.window, text='Введите номер телефона')
-        self.pn.place(x=140, y=145)
-        self.EnterPN = tk.Entry(self.window, width=40)
+        self.pn.place(x=120, y=145)
+        self.EnterPN = tk.Entry(self.window, width=30)
         self.EnterPN.place(x=85, y=175)
 
         self.pas = tk.Label(self.window, text='Введите пароль')
         self.pas.place(x=150, y=205)
-        self.EnterPass = tk.Entry(self.window, width=40)
+        self.EnterPass = tk.Entry(self.window, width=30)
         self.EnterPass.place(x=85, y=235)
 
         conf = tk.Button(self.window, text='Сохранить', command=self.add_text, width=20, height=1)
