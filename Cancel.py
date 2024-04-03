@@ -41,3 +41,4 @@ class Cancel:
             tk.messagebox.showinfo(message="Ваш аккаунт не был удален")
             self.window.destroy()
 
+

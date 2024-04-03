@@ -16,14 +16,14 @@ class Deposit:
         self.text.place(x=140, y=25)
 
         self.fix = tk.Label(self.window, text='На фиксированный счет:')
-        self.fix.place(x=40, y=75)
+        self.fix.place(x=20, y=75)
         self.EnterFix = tk.Entry(self.window, width=20)
-        self.EnterFix.place(x=200, y=75)
+        self.EnterFix.place(x=220, y=75)
 
-        self.dem = tk.Label(self.window, text='На счет до востребования:')
-        self.dem.place(x=40, y=125)
+        self.dem = tk.Label(self.window, text='На дебетовый счет:')
+        self.dem.place(x=20, y=125)
         self.EnterDem = tk.Entry(self.window, width=20)
-        self.EnterDem.place(x=200, y=125)
+        self.EnterDem.place(x=220, y=125)
 
         conf = tk.Button(self.window, text='Пополнить', command=self.top_up, width=20, height=1)
         conf.place(x=130, y=255)

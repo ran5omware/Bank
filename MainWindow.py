@@ -159,7 +159,3 @@ class Window:
         bankNumber = self.cur.fetchone()[0]
         Cancel(cancelWindow, bankNumber)
         cancelWindow.mainloop()
-
-
-if __name__ == '__main__':
-    Window('1')

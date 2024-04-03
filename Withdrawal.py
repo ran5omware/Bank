@@ -72,7 +72,7 @@ class Withdrawal:
         self.cur.execute("SELECT fixed_balance FROM accounts WHERE bankNumber=?", (self.bankNumber,))
         if self.cur.fetchone()[0] >= int(self.EnterCash.get()):
             self.cur.execute("SELECT fixed_balance FROM accounts WHERE bankNumber=?", (self.bankNumber,))
-            self.curBal = self.cur.fetchone()[0] - self.EnterCash.get()
+            self.curBal = self.cur.fetchone()[0] - int(self.EnterCash.get())
             self.cur.execute("SELECT password FROM users WHERE bankNumber=?", (self.bankNumber,))
             if self.cur.fetchone()[0] == self.EnterPass.get():
                 self.cur.execute("SELECT createDate FROM accounts WHERE bankNumber=?", (self.bankNumber,))

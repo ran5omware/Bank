@@ -20,13 +20,13 @@ class CardChange:
 
         self.iden = tk.Label(self.window, text='Введите идентификатор')
         self.iden.place(x=150, y=55)
-        self.EnterId = tk.Entry(self.window, width=40)
-        self.EnterId.place(x=85, y=85)
+        self.EnterId = tk.Entry(self.window, width=30)
+        self.EnterId.place(x=95, y=85)
 
         self.password = tk.Label(self.window, text='Введите пароль')
         self.password.place(x=140, y=115)
-        self.EnterPass = tk.Entry(self.window, width=40)
-        self.EnterPass.place(x=85, y=145)
+        self.EnterPass = tk.Entry(self.window, width=30)
+        self.EnterPass.place(x=95, y=145)
 
         conf = tk.Button(self.window, text='Выпустить новую карту', command=self.change, width=20, height=1)
         conf.place(x=130, y=265)

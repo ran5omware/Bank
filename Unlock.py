@@ -9,19 +9,19 @@ class Unlock:
         self.count = 0
 
         self.iden = tk.Label(self.window, text='Введите идентификатор')
-        self.iden.place(x=150, y=25)
-        self.EnterId = tk.Entry(self.window, width=40)
-        self.EnterId.place(x=85, y=55)
+        self.iden.place(x=140, y=25)
+        self.EnterId = tk.Entry(self.window, width=30)
+        self.EnterId.place(x=95, y=55)
 
         self.bN = tk.Label(self.window, text='Введите номер банковского счета')
-        self.bN.place(x=140, y=85)
-        self.EnterBN = tk.Entry(self.window, width=40)
-        self.EnterBN.place(x=85, y=115)
+        self.bN.place(x=110, y=85)
+        self.EnterBN = tk.Entry(self.window, width=30)
+        self.EnterBN.place(x=95, y=115)
 
         self.password = tk.Label(self.window, text='Введите пароль')
         self.password.place(x=140, y=145)
-        self.EnterPass = tk.Entry(self.window, width=40)
-        self.EnterPass.place(x=85, y=175)
+        self.EnterPass = tk.Entry(self.window, width=30)
+        self.EnterPass.place(x=95, y=175)
 
         conf = tk.Button(self.window, text='Разблокировать', command=self.unlock, width=20, height=1)
         conf.place(x=130, y=245)

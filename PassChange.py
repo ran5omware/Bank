@@ -16,18 +16,18 @@ class PasswordChange:
 
         self.iden = tk.Label(self.window, text='Введите идентификатор')
         self.iden.place(x=150, y=55)
-        self.EnterId = tk.Entry(self.window, width=40)
-        self.EnterId.place(x=85, y=85)
+        self.EnterId = tk.Entry(self.window, width=30)
+        self.EnterId.place(x=95, y=85)
 
         self.pn = tk.Label(self.window, text='Введите номер телефона')
         self.pn.place(x=140, y=115)
-        self.EnterPN = tk.Entry(self.window, width=40)
-        self.EnterPN.place(x=85, y=145)
+        self.EnterPN = tk.Entry(self.window, width=30)
+        self.EnterPN.place(x=95, y=145)
 
         self.cn = tk.Label(self.window, text='Введите номер карты')
         self.cn.place(x=140, y=175)
-        self.EnterCN = tk.Entry(self.window, width=40)
-        self.EnterCN.place(x=85, y=205)
+        self.EnterCN = tk.Entry(self.window, width=30)
+        self.EnterCN.place(x=95, y=205)
 
         conf = tk.Button(self.window, text='Проверить', command=self.change, width=20, height=1)
         conf.place(x=130, y=265)
